@@ -70,3 +70,8 @@ ul {
     display: grid;
     gap: 10px;
 }
+
+li {
+    display: flex;
+    gap: 20px;
+}
