@@ -1,22 +1,34 @@
 import './App.css';
 import {TodoStructure} from "./TodoStructure.tsx";
 import {TodoList} from "./TodoList.tsx";
-import {useState} from "react";
-
+import {useState, useEffect} from "react";
+import {Todo} from "./TodoInterface.ts";
+import {postTodoFetch} from "./PostTodo.ts";
+import {GetTodoFetch} from "./GetTodoFetch.ts";
 
 const App = () => {
-    const [list, setList] = useState<string[]>([])
-    const todoAdd = (todoAdd: string) => {
-        setList([...list, todoAdd])
-    }
+    const [todos, setTodos] = useState<Todo[]>([]);
+
+    useEffect(() => {
+        GetTodoFetch().then(todos => setTodos(todos))
+    }, []);
+
+    const todoAdd = async (todoAdd: string, duedate: string) => {
+        const newTodo: { title: string; due_date: string } = {title: todoAdd, due_date: duedate};
+        try {
+            const createdTodo = await postTodoFetch(newTodo);
+            setTodos([...todos, createdTodo])
+        } catch (error) {
+            console.error(error);
+        }
+    };
     return (
         <div className="content">
             <h1>𝓜𝔂 𝓽𝓸𝓭𝓸 𝓛𝓲𝓼𝓽</h1>
             <TodoStructure addTodo={todoAdd}/>
-            <TodoList todoList={list}/>
+            <TodoList todoList={todos}/>
         </div>
     );
 };
 
 export default App;
-
