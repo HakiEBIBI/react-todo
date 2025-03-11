@@ -13,6 +13,10 @@ const App = () => {
         GetTodoFetch().then(todos => setTodos(todos))
     }, []);
 
+    const deleteFromList = (todo: Todo) => {
+        setTodos((todos) => todos.filter((t) => t.id !== todo.id));
+    };
+
     const todoAdd = async (todoAdd: string, duedate: string) => {
         const newTodo: { title: string; due_date: string } = {title: todoAdd, due_date: duedate};
         try {
@@ -26,7 +30,7 @@ const App = () => {
         <div className="content">
             <h1>𝓜𝔂 𝓽𝓸𝓭𝓸 𝓛𝓲𝓼𝓽</h1>
             <TodoStructure addTodo={todoAdd}/>
-            <TodoList todoList={todos}/>
+            <TodoList todoList={todos} deleteTodo={deleteFromList}/>
         </div>
     );
 };
