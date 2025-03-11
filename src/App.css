@@ -76,3 +76,8 @@ li {
     gap: 20px;
     align-items: center;
 }
+
+.button-li {
+    border: none;
+    background-color: transparent;
+}
