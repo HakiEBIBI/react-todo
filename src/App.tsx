@@ -14,16 +14,16 @@ const App = () => {
     }, []);
 
     const deleteFromList = (todo: Todo) => {
-        setTodos((todos) => todos.filter((t) => t.id !== todo.id));
+        setTodos((todos) => todos.filter((t) => t.id !== todo.id))
     };
 
     const todoAdd = async (todoAdd: string, duedate: string) => {
-        const newTodo: { title: string; due_date: string } = {title: todoAdd, due_date: duedate};
+        const newTodo: { title: string; due_date: string } = {title: todoAdd, due_date: duedate}
         try {
-            const createdTodo = await postTodoFetch(newTodo);
+            const createdTodo = await postTodoFetch(newTodo)
             setTodos([...todos, createdTodo])
         } catch (error) {
-            console.error(error);
+            console.error(error)
         }
     };
     return (

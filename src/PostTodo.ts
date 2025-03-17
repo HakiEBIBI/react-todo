@@ -12,6 +12,6 @@ export async function postTodoFetch(postTodo: { title: string; due_date: string 
         body: JSON.stringify(postTodo),
     });
 
-    return await response.json();
+    return await response.json()
 
 }
