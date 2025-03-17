@@ -1,23 +1,23 @@
-import React, {useState} from 'react';
+import React, {useState} from 'react'
 
 export const TodoStructure = ({addTodo}: { addTodo: (todoAdd: string, duedate: string) => void }) => {
-    const [inputValue, setInputValue] = useState('');
-    const [dueDate, setDueDate] = useState('');
+    const [inputValue, setInputValue] = useState('')
+    const [dueDate, setDueDate] = useState('')
 
     const HandleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setInputValue(e.target.value);
+        setInputValue(e.target.value)
     };
 
     const HandleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setDueDate(e.target.value);
+        setDueDate(e.target.value)
     };
 
     const newTodo = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (inputValue.trim() && dueDate) {
-            addTodo(inputValue, dueDate);
-            setInputValue('');
-            setDueDate('');
+            addTodo(inputValue, dueDate)
+            setInputValue('')
+            setDueDate('')
         }
     };
 

@@ -80,4 +80,18 @@ li {
 .button-li {
     border: none;
     background-color: transparent;
+    cursor: pointer;
+}
+
+.li-input {
+    background-color: transparent;
+    border: transparent;
+    color: #fff;
+}
+
+.li-date {
+    background-color: transparent;
+    border: transparent;
+    color: #fff;
+    font-size: 0.8rem;
 }
