@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {Todo} from "./TodoInterface.ts";
 import {DeleteTodoAPI} from "./DeleteTodoAPI.ts";
 import {PatchTodoAPI} from "./PatchTodoAPI.ts";
@@ -9,7 +9,8 @@ export const ListTodo = (
         date,
         deleteTodo,
         todo
-    }: {title: string,
+    }: {
+        title: string,
         date: string,
         deleteTodo: (todo: Todo) => void,
         todo: Todo
@@ -19,16 +20,43 @@ export const ListTodo = (
     const [dueDate, setDueDate] = useState(date)
     const [checkbox, setCheckbox] = useState<boolean>(false)
 
-    const inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setInputValue(e.target.value)
+    const handleInputBlur = async () => {
+        try {
+            const updatedTodo = {
+                ...todo,
+                title: inputValue
+            };
+            await PatchTodoAPI(updatedTodo)
+        } catch (error) {
+            console.error("Erreur lors de la mise à jour du texte :", error)
+        }
     };
 
-    const dateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setDueDate(e.target.value)
+    const handleDateBlur = async () => {
+        try {
+            const updatedTodo = {
+                ...todo,
+                due_date: dueDate
+            };
+            await PatchTodoAPI(updatedTodo)
+        } catch (error) {
+            console.error("Erreur lors de la mise à jour de la date :", error)
+        }
     };
 
-    const checkboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setCheckbox(e.target.checked)
+    const handleCheckboxChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const isChecked = e.target.checked;
+        setCheckbox(isChecked)
+
+        try {
+            const updatedTodo = {
+                ...todo,
+                done: isChecked
+            };
+            await PatchTodoAPI(updatedTodo)
+        } catch (error) {
+            console.error("Erreur lors de la mise à jour de la checkbox :", error);
+        }
     };
 
     const handleDelete = async () => {
@@ -40,21 +68,14 @@ export const ListTodo = (
         }
     };
 
-    useEffect(() => {
-        const updateTodoStatusDone = async () => {
-            await PatchTodoAPI(todo, checkbox, inputValue, dueDate);
-        };
-
-        updateTodoStatusDone().then((r) => console.log(r));
-    }, [checkbox, todo, inputValue, dueDate])
-
-
     return (
         <>
             <li>
-                <input className={"li-input"} value={inputValue} onInput={inputChange}></input>
-                <input type={"date"} value={dueDate} className={"li-date"} onInput={dateChange}></input>
-                <input type="checkbox" checked={checkbox} onChange={checkboxChange}/>
+                <input className={"li-input"} value={inputValue} onChange={(e) => setInputValue(e.target.value)}
+                       onBlur={handleInputBlur}></input>
+                <input type={"date"} value={dueDate} className={"li-date"} onChange={(e) => setDueDate(e.target.value)}
+                       onBlur={handleDateBlur}></input>
+                <input type="checkbox" checked={checkbox} onChange={handleCheckboxChange}/>
                 <button
                     className="button-li"
                     onClick={() => handleDelete()}
