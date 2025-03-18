@@ -8,12 +8,12 @@ export const ListTodo = (
         title,
         date,
         deleteTodo,
-        todo
+        todo,
     }: {
         title: string,
         date: string,
         deleteTodo: (todo: Todo) => void,
-        todo: Todo
+        todo: Todo,
     }
 ) => {
     const [inputValue, setInputValue] = useState(title)
