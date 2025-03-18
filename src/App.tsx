@@ -8,10 +8,31 @@ import {GetTodoFetch} from "./GetTodoFetch.ts";
 
 const App = () => {
     const [todos, setTodos] = useState<Todo[]>([]);
+    const [sort, setSort] = useState("name")
+
+    let sortedTodo: Todo[]
 
     useEffect(() => {
         GetTodoFetch().then(todos => setTodos(todos))
     }, []);
+
+    const changeSorting = (sortType: string) => {
+        setSort(sortType);
+    };
+
+    if (sort === 'due-date') {
+        sortedTodo = [...todos].sort((a, b) => {
+            return new Date(b.due_date).getTime() - new Date(a.due_date).getTime();
+        });
+    } else if (sort === 'name') {
+        sortedTodo = [...todos].sort((a, b) => a.title.localeCompare(b.title));
+    } else if (sort === 'done') {
+        sortedTodo = todos.filter((todo) => todo.done);
+    } else if (sort === 'undone') {
+        sortedTodo = todos.filter((todo) => !todo.done);
+    } else {
+        sortedTodo = [...todos];
+    }
 
     const deleteFromList = (todo: Todo) => {
         setTodos((todos) => todos.filter((t) => t.id !== todo.id))
@@ -29,8 +50,8 @@ const App = () => {
     return (
         <div className="content">
             <h1>𝓜𝔂 𝓽𝓸𝓭𝓸 𝓛𝓲𝓼𝓽</h1>
-            <TodoStructure addTodo={todoAdd}/>
-            <TodoList todoList={todos} deleteTodo={deleteFromList}/>
+            <TodoStructure addTodo={todoAdd} sorting={changeSorting}/>
+            <TodoList todoList={sortedTodo} deleteTodo={deleteFromList}/>
         </div>
     );
 };
