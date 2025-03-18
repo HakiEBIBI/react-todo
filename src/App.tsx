@@ -27,11 +27,9 @@ const App = () => {
     } else if (sort === 'name') {
         sortedTodo = [...todos].sort((a, b) => a.title.localeCompare(b.title));
     } else if (sort === 'done') {
-        sortedTodo = [...todos].sort((a, b) => (b.done > a.done ? 1 : -1));
-        sortedTodo = sortedTodo.filter((todo) => todo.done);
+        sortedTodo = todos.filter((todo) => todo.done);
     } else if (sort === 'undone') {
-        sortedTodo = [...todos].sort((a, b) => (a.done > b.done ? 1 : -1));
-        sortedTodo = sortedTodo.filter((todo) => !todo.done);
+        sortedTodo = todos.filter((todo) => !todo.done);
     } else {
         sortedTodo = [...todos];
     }
