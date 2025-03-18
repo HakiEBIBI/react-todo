@@ -99,3 +99,8 @@ li {
 input {
     cursor: pointer;
 }
+
+.error {
+    background-color: #f44336;
+    color: #fff;
+}
