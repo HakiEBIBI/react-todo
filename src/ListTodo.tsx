@@ -9,11 +9,13 @@ export const ListTodo = (
         date,
         deleteTodo,
         todo,
+        setError,
     }: {
         title: string,
         date: string,
         deleteTodo: (todo: Todo) => void,
         todo: Todo,
+        setError: (error: string | null) => void,
     }
 ) => {
     const [inputValue, setInputValue] = useState(title)
@@ -27,8 +29,9 @@ export const ListTodo = (
                 title: inputValue
             };
             await PatchTodoAPI(updatedTodo)
+            setError(null)
         } catch (error) {
-            console.error("Erreur lors de la mise à jour du texte :", error)
+            setError("Failed to update the task title.");
         }
     };
 
@@ -39,8 +42,9 @@ export const ListTodo = (
                 due_date: dueDate
             };
             await PatchTodoAPI(updatedTodo)
+            setError(null)
         } catch (error) {
-            console.error("Erreur lors de la mise à jour de la date :", error)
+            setError("Failed to update the task date.");
         }
     };
 
@@ -54,8 +58,9 @@ export const ListTodo = (
                 done: isChecked
             };
             await PatchTodoAPI(updatedTodo)
+            setError(null)
         } catch (error) {
-            console.error("Erreur lors de la mise à jour de la checkbox :", error);
+            setError("Failed to update the task checkbox.");
         }
     };
 
@@ -63,8 +68,9 @@ export const ListTodo = (
         try {
             await DeleteTodoAPI(todo)
             deleteTodo(todo)
+            setError(null)
         } catch (error) {
-            console.error("Erreur lors de la suppression de la tâche :", error)
+            setError("Failed to update the task checkbox.");
         }
     };
 

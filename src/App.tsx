@@ -7,8 +7,9 @@ import {postTodoFetch} from "./PostTodo.ts";
 import {GetTodoFetch} from "./GetTodoFetch.ts";
 
 const App = () => {
-    const [todos, setTodos] = useState<Todo[]>([]);
+    const [todos, setTodos] = useState<Todo[]>([])
     const [sort, setSort] = useState("name")
+    const [error, setError] = useState<string | null>(null)
 
     let sortedTodo: Todo[]
 
@@ -35,10 +36,21 @@ const App = () => {
     }
 
     const deleteFromList = (todo: Todo) => {
-        setTodos((todos) => todos.filter((t) => t.id !== todo.id))
+        try {
+            setTodos((todos) => todos.filter((t) => t.id !== todo.id));
+            setError(null)
+        } catch (error) {
+            setError("Failed to delete the task.");
+        }
     };
 
     const todoAdd = async (todoAdd: string, duedate: string) => {
+        console.log("salut");
+        if (isNaN(new Date(duedate).getTime())) {
+            setError("Please enter a valid date.");
+            return;
+        }
+
         const newTodo: { title: string; due_date: string } = {title: todoAdd, due_date: duedate}
         try {
             const createdTodo = await postTodoFetch(newTodo)
@@ -50,8 +62,9 @@ const App = () => {
     return (
         <div className="content">
             <h1>𝓜𝔂 𝓽𝓸𝓭𝓸 𝓛𝓲𝓼𝓽</h1>
-            <TodoStructure addTodo={todoAdd} sorting={changeSorting}/>
-            <TodoList todoList={sortedTodo} deleteTodo={deleteFromList}/>
+            {error && <h3 className={"error"}>{error}</h3>}
+            <TodoStructure addTodo={todoAdd} sorting={changeSorting} setError={setError}/>
+            <TodoList todoList={sortedTodo} deleteTodo={deleteFromList} setError={setError}/>
         </div>
     );
 };

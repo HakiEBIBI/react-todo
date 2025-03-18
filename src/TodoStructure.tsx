@@ -1,8 +1,9 @@
 import React, {useState} from 'react'
 
-export const TodoStructure = ({addTodo, sorting}: {
+export const TodoStructure = ({addTodo, sorting, setError}: {
     addTodo: (todoAdd: string, duedate: string) => void,
-    sorting: (sortType: string) => void;
+    sorting: (sortType: string) => void,
+    setError: (error: string | null) => void,
 }) => {
     const [inputValue, setInputValue] = useState('')
     const [dueDate, setDueDate] = useState('')
@@ -21,6 +22,11 @@ export const TodoStructure = ({addTodo, sorting}: {
             addTodo(inputValue, dueDate)
             setInputValue('')
             setDueDate('')
+            setError(null)
+        } else if (dueDate) {
+            setError("please enter an input")
+        } else {
+            setError("please enter an due date")
         }
     };
 
@@ -32,13 +38,11 @@ export const TodoStructure = ({addTodo, sorting}: {
                         onChange={HandleInput}
                         value={inputValue}
                         placeholder="Enter a task"
-                        required
                     />
                     <input
                         type="date"
                         onChange={HandleDateChange}
                         value={dueDate}
-                        required
                     />
                     <button type="submit" className="ButtonTodo">
                         Add
