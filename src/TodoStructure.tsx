@@ -26,6 +26,11 @@ export const TodoStructure = () => {
 
         if (inputValue.trim() && dueDate) {
             const newTodo: { title: string; due_date: string } = {title: inputValue, due_date: dueDate}
+            if (dueDate) {
+                setError("please enter an input")
+            } else {
+                setError("please enter an due date")
+            }
             try {
                 const createdTodo = await postTodoFetch(newTodo)
                 addTodo(createdTodo)
@@ -35,17 +40,14 @@ export const TodoStructure = () => {
             setInputValue('')
             setDueDate('')
             setError(null)
-        } else if (dueDate) {
-            setError("please enter an input")
-        } else {
-            setError("please enter an due date")
-        }
 
-        if (isNaN(new Date(dueDate).getTime())) {
-            setError("Please enter a valid date.");
-            return;
+            if (isNaN(new Date(dueDate).getTime())) {
+                setError("Please enter a valid date.");
+                return;
+            }
         }
-    };
+        ;
+    }
 
     return (
         <form onSubmit={newTodo}>
